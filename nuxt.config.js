@@ -35,7 +35,14 @@ export default {
   modules: [
     // Doc: https://bootstrap-vue.js.org/docs/
     'bootstrap-vue/nuxt',
+    '@nuxtjs/style-resources'
   ],
+  styleResources: {
+    scss: [
+      '.assets/vars/*.scss',
+      '.assets/abstracts/_mixins.scss'
+    ]
+  },
   /*
   ** Build configuration
   */
