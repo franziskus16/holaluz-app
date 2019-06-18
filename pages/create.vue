@@ -1,12 +1,23 @@
 <template>
     <article>
         <section>
-            <h1>Holaluz price charts</h1>
+            <h1>Holaluz charts</h1>
             <div>
+                <div class="d-flex flex-row justify-content-center">
+                    <div class="d-flex flex-row ml-3">
+                        <div class="align-self-center chart1"></div> 
+                        <div class="align-self-center ml-3">1 PRECIO</div>
+                    </div>
+                    <div class="d-flex flex-row ml-3">
+                        <div class="align-self-center chart2"></div> 
+                        <div class="align-self-center ml-3">2 PRECIOS</div>
+                    </div>
+                    <div class="d-flex flex-row ml-3">
+                        <div class="align-self-center chart3"></div> 
+                        <div class="align-self-center ml-3">3.0a</div>
+                    </div>
+                </div>
               <div class="chart"></div>
-                <!-- <ul>
-                    <li v-for="prices in prices" class="item"></li>
-                </ul> -->
             </div>
         </section>
     </article>    
@@ -75,15 +86,15 @@ import * as d3 from 'd3';
         
         // 2. Use the margin convention practice 
         var margin = {top: 50, right: 50, bottom: 50, left: 50}
-        , width = window.innerWidth - margin.left - margin.right // Use the window's width 
-        , height = window.innerHeight - margin.top - margin.bottom; // Use the window's height
+        , width = 650 - margin.left - margin.right // Use the window's width 
+        , height = 400 - margin.top - margin.bottom; // Use the window's height
 
         // The number of datapoints
-        var n = 24;
+        var n = 23;
 
         // 5. X scale will use the index of our data
         var xScale = d3.scaleLinear()
-            .domain([0, n-1]) // input
+            .domain([0, n]) // input
             .range([0, width]); // output
 
         // 6. Y scale will use the randomly generate number 
@@ -97,113 +108,87 @@ import * as d3 from 'd3';
             .y(function(d) { return yScale(d.y); }) // set the y values for the line generator 
             .curve(d3.curveMonotoneX) // apply smoothing to the line
 
-    // 8. An array of objects of length N. Each object has key -> value pair, the key being "y" and the value is a random number
-    //var dataset = d3.range(n).map(function(d) { return {"y": d3.randomUniform(1)() } })
+        // 1. Add the SVG to the page and employ #2
+        var svg = d3.select(".chart").append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    // 1. Add the SVG to the page and employ #2
-    var svg1 = d3.select("body").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        // 3. Call the x axis in a group tag
+        svg.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
 
-    // 3. Call the x axis in a group tag
-    svg1.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
+        // 4. Call the y axis in a group tag
+        svg.append("g")
+            .attr("class", "y axis")
+            .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
 
-    // 4. Call the y axis in a group tag
-    svg1.append("g")
-        .attr("class", "y axis")
-        .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
-
-    // 9. Append the path, bind the data, and call the line generator 
-    svg1.append("path")
-        .datum(dataset1) // 10. Binds data to the line 
-        .attr("class", "line") // Assign a class for styling 
-        .attr("d", line); // 11. Calls the line generator 
-
-// 1. Add the SVG to the page and employ #2
-    var svg2 = d3.select("body").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    // 3. Call the x axis in a group tag
-    svg2.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
-
-    // 4. Call the y axis in a group tag
-    svg2.append("g")
-        .attr("class", "y axis")
-        .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
-
-    // 9. Append the path, bind the data, and call the line generator 
-    svg2.append("path")
-        .datum(dataset2) // 10. Binds data to the line 
-        .attr("class", "line") // Assign a class for styling 
-        .attr("d", line); // 11. Calls the line generator 
-
-
-
-// 1. Add the SVG to the page and employ #2
-    var svg3 = d3.select("body").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    // 3. Call the x axis in a group tag
-    svg3.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(xScale)); // Create an axis component with d3.axisBottom
-
-    // 4. Call the y axis in a group tag
-    svg3.append("g")
-        .attr("class", "y axis")
-        .call(d3.axisLeft(yScale)); // Create an axis component with d3.axisLeft
-
-    // 9. Append the path, bind the data, and call the line generator 
-    svg3.append("path")
-        .datum(dataset2) // 10. Binds data to the line 
-        .attr("class", "line") // Assign a class for styling 
-        .attr("d", line); // 11. Calls the line generator 
-
-
+        // 9. Append the path, bind the data, and call the line generator 
+        svg.append("path")
+            .datum(dataset1) // 10. Binds data to the line 
+            .attr("class", "line") // Assign a class for styling 
+            .attr("d", line); // 11. Calls the line generator 
+            // 9. Append the path, bind the data, and call the line generator 
+        svg.append("path")
+            .datum(dataset2) // 10. Binds data to the line 
+            .attr("class", "line2") // Assign a class for styling 
+            .attr("d", line); // 11. Calls the line generator 
+            // 9. Append the path, bind the data, and call the line generator 
+        svg.append("path")
+            .datum(dataset3) // 10. Binds data to the line 
+            .attr("class", "line3") // Assign a class for styling 
+            .attr("d", line); // 11. Calls the line generator 
 
         }
         }
-
     }
 
 </script>
 <style>
-
+.chart1 {
+    width:10px;
+    height:10px;
+    background-color:#e5027b;
+}
+.chart2 {
+    width:10px;
+    height:10px;
+    background-color:#ef5d26;
+}
+.chart3 {
+    width:10px;
+    height:10px;
+    background-color:#edbd4e;
+}
 .line {
     fill: none;
-    stroke: #ffab00;
+    stroke: #e5027b;
     stroke-width: 3;
+}
+.line2 {
+    fill: none;
+    stroke: #ef5d26;
+    stroke-width: 3;
+}
+.line3 {
+    fill: none;
+    stroke: #edbd4e;
+    stroke-width: 3;
+}
+
+.legend {
+    font-size: 12px;
+}
+rect {
+    stroke-width: 2;
 }
   
 .overlay {
   fill: none;
   pointer-events: all;
-}
-
-/* Style the dots by assigning a fill and stroke */
-.dot {
-    fill: #ffab00;
-    stroke: #fff;
-}
-  
-  .focus circle {
-  fill: none;
-  stroke: steelblue;
 }
 
 </style>
